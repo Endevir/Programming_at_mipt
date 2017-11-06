@@ -65,6 +65,7 @@ public:
 
 	const std::string toString() const;
 	int ToInt() const;
+    double ToDouble() const;
 };
 
 const BigInteger abs(const BigInteger &a)   
@@ -534,6 +535,15 @@ int BigInteger::ToInt() const
 	return res;
 }
 
+double BigInteger::ToDouble() const
+{
+    double res = 0.0;
+    for (unsigned int i = 0; i < length(); i++)
+        res = res * 10 + static_cast<double>((*this)[length() - i - 1]);
+    res *= GetSign();
+    return res;
+}
+
 const BigInteger BigInteger::GetAbs() const  {
 	BigInteger res = *this;
 	res.sign = 1;
@@ -562,6 +572,7 @@ public:
 	Rational& operator -= (const Rational& num);
 	Rational& operator /= (const Rational& num);
 
+    explicit operator double() const;
 	const Rational operator -() const;
 
 	const std::string toString() const;
@@ -772,4 +783,19 @@ void Rational::Improve() {
 		numerator *= -1;
 	}
 	return;
+}
+
+Rational::operator double() const {
+    int precision = 20;
+    BigInteger temp_numerator = numerator;
+
+    for (int i = 0; i < precision; i++)
+        temp_numerator *= 10;
+
+    double res = (temp_numerator / denominator).ToDouble();
+
+    for (int i = 0; i < precision; i++)
+        res /= 10.0;
+
+    return res;
 }

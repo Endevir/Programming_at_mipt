@@ -31,8 +31,9 @@
 *.out
 *.app
 
-#CMake Debug folder
+#CMake files
 cmake-build-debug
+CMake*
 
 #CLion .idea folder
 .idea
